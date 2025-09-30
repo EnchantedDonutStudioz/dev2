@@ -414,11 +414,10 @@ iframe.browser-frame.visible {
   text-shadow: #00ff8881 0 0 20px;
 }
 
-/* Responsive ad banner */
 .ad-banner-container {
   left: 50%;
   transform: translateX(-50%);
-  bottom: -6%;
+  bottom: -30%;
   position: fixed;
   width: 728px;
   height: 90px;
@@ -435,9 +434,11 @@ iframe.browser-frame.visible {
   0% {
     translate: 0px -2px;
   }
+
   50% {
     translate: 0px 2px;
   }
+
   100% {
     translate: 0px -2px;
   }
@@ -447,7 +448,6 @@ iframe.browser-frame.visible {
   bottom: 2%;
 }
 
-/* Media queries for extreme cases */
 @media (max-width: 768px) {
   #searchbar-container {
     width: 60%;
