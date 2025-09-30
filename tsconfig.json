@@ -1,0 +1,25 @@
+// tsconfig.json
+{
+  "extends": "astro/tsconfigs/strict",
+  "compilerOptions": {
+    // This is the magic part!
+    // Set the base URL for module resolution to your project root.
+    "baseUrl": ".",
+    // Create path aliases. The '@/*' alias will now point to './client/src/*'.
+    "paths": {
+      "@/*": [
+        "client/src/*"
+      ]
+    }
+  },
+  // Be more specific about what to include.
+  "include": [
+    ".astro/types.d.ts",
+    "client/src/**/*.astro",
+    "client/src/**/*.ts", // This specifically includes your scripts folder!
+    "client/src/**/*.tsx"
+  ],
+  "exclude": [
+    "dist"
+  ]
+}

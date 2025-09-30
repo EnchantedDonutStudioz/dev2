@@ -1,0 +1,50 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Bolt" proxy={false}>
+  <div class="background-gradient"></div>
+  <div
+    id="c"
+    class="flex flex-col justify-center items-center w-screen h-screen"
+  >
+    <div class="flex flex-col justify-center items-center">
+      <h1 class="font-black text-8xl tab-aurora-text">Bolt</h1>
+      <h2>v3 Preview</h2>
+      <div
+        id="searchbar-container"
+        class="flex flex-col justify-center items-center h-fit m-0"
+      >
+        <form method="POST" id="tabForm">
+          <input
+            type="text"
+            placeholder="Search or enter a URL"
+            id="tabInput"
+            class="glass"
+          />
+        </form>
+      </div>
+    </div>
+  </div>
+  <script>
+    const tabForm = document.getElementById("tabForm") as HTMLFormElement;
+    const tabInput = document.getElementById("tabInput") as HTMLInputElement;
+
+    if (tabForm && tabInput) {
+      tabForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const query = tabInput.value.trim();
+        if (query) {
+          window.parent.postMessage(
+            {
+              type: "navigate",
+              query: query,
+            },
+            "*"
+          );
+        }
+      });
+    }
+  </script>
+</Layout>

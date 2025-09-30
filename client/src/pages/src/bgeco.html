@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        :root {
+            --bg: #06070a;
+            --ui-bg: rgba(15, 16, 25, .65);
+            --ui-fg: #cfe7ff;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            overflow: hidden;
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;
+        }
+
+        #scene {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            display: block;
+            background:
+                radial-gradient(1200px 800px at 70% 35%, #0a0f2a 0%, #070a17 35%, #06070a 70%),
+                #06070a;
+        }
+
+        .blob-container {
+            position: absolute;
+            will-change: transform;
+            transform-origin: center;
+        }
+
+        .blob {
+            mix-blend-mode: screen;
+            will-change: transform;
+            transform: translate3d(0, 0, 0);
+        }
+
+        .blob-glow {
+            position: absolute;
+            top: -20%;
+            left: -20%;
+            width: 140%;
+            height: 140%;
+            filter: blur(8px);
+            opacity: 0.7;
+        }
+
+        .blob-body {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .vignette {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background: radial-gradient(120vmax 90vmax at 50% 50%, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, .6) 100%);
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+            }
+
+            25% {
+                transform: translate3d(20px, -15px, 0) rotate(90deg) scale(1.05);
+            }
+
+            50% {
+                transform: translate3d(-10px, -25px, 0) rotate(180deg) scale(0.95);
+            }
+
+            75% {
+                transform: translate3d(-25px, 10px, 0) rotate(270deg) scale(1.02);
+            }
+        }
+
+        @keyframes morph {
+
+            0%,
+            100% {
+                transform: rotate(0deg) scale(1, 1);
+            }
+
+            33% {
+                transform: rotate(120deg) scale(1.1, 0.9);
+            }
+
+            66% {
+                transform: rotate(240deg) scale(0.9, 1.1);
+            }
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 0.8;
+            }
+
+            50% {
+                opacity: 0.6;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            .blob-container,
+            .blob {
+                animation: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="scene"></div>
+    <div class="vignette"></div>
+
+    <script>
+        const scene = document.getElementById('scene');
+
+        const QUALITY = 'eco';
+        const PRESETS = {
+            normal: { count: 4, minSize: 300, maxSize: 420 },
+            low: { count: 3, minSize: 300, maxSize: 420 },
+            eco: { count: 3, minSize: 280, maxSize: 400 }
+        };
+        const P = PRESETS[QUALITY] || PRESETS.eco;
+
+        const PALETTES = [
+            [
+                ["#0B1C8C", "#1232E0", "#2B8FFF", "#82F0FF"],
+                ["#08145C", "#0E1E8A", "#254AD1", "#66C6FF"],
+                ["#05103F", "#0C2A85", "#2378FF", "#7DE0FF"],
+                ["#06243B", "#0C4B64", "#15A4B9", "#9EF5FF"],
+                ["#0A2742", "#0D5A6E", "#19C38B", "#B2FFD6"]
+            ],
+            [
+                ["#ff0000", "#c92525", "#ffba71", "#fff98b"],
+                ["#ff8800", "#c98725", "#ffe571", "#fff98b"],
+            ]
+        ];
+
+        const rand = (a, b) => a + Math.random() * (b - a);
+
+        function createSimpleBlobSVG(colors) {
+            const svg = `
+                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
+                    <defs>
+                        <radialGradient id="grad-${Math.random().toString(36).slice(2, 7)}">
+                            <stop offset="0%" stop-color="${colors[0]}" stop-opacity="1"/>
+                            <stop offset="35%" stop-color="${colors[1]}" stop-opacity="0.95"/>
+                            <stop offset="75%" stop-color="${colors[2]}" stop-opacity="0.85"/>
+                            <stop offset="100%" stop-color="${colors[3]}" stop-opacity="0.78"/>
+                        </radialGradient>
+                    </defs>
+                    <path d="M100,30 C130,30 170,50 170,100 C170,150 130,170 100,170 C70,170 30,150 30,100 C30,50 70,30 100,30 Z" 
+                          fill="url(#grad-${Math.random().toString(36).slice(2, 7)})"
+                          transform-origin="center">
+                        <animateTransform
+                            attributeName="transform"
+                            type="rotate"
+                            from="0 100 100"
+                            to="360 100 100"
+                            dur="${rand(15, 25)}s"
+                            repeatCount="indefinite"/>
+                    </path>
+                </svg>`;
+            return svg;
+        }
+
+        function createBlob(index) {
+            const container = document.createElement('div');
+            container.className = 'blob-container';
+
+            const size = rand(P.minSize, P.maxSize);
+            const W = window.innerWidth;
+            const H = window.innerHeight;
+
+            // Position blobs around edges and some in center
+            let x, y;
+            const zone = Math.random();
+            if (zone < 0.25) {
+                x = rand(-size / 2, size / 2);
+                y = rand(0, H - size);
+            } else if (zone < 0.5) {
+                x = rand(W - size, W - size / 2);
+                y = rand(0, H - size);
+            } else if (zone < 0.75) {
+                x = rand(0, W - size);
+                y = rand(-size / 2, size / 2);
+            } else {
+                x = rand(size / 2, W - size * 1.5);
+                y = rand(size / 2, H - size * 1.5);
+            }
+
+            container.style.width = `${size}px`;
+            container.style.height = `${size}px`;
+            container.style.left = `${x}px`;
+            container.style.top = `${y}px`;
+
+            // Float animation
+            const floatDuration = rand(18, 28);
+            const floatDelay = rand(0, 5);
+            container.style.animation = `float ${floatDuration}s ${floatDelay}s ease-in-out infinite`;
+
+            const blob = document.createElement('div');
+            blob.className = 'blob';
+
+            // Choose palette
+            const paletteIdx = localStorage.getItem('theme') || 0;
+            const palette = PALETTES[paletteIdx][Math.floor(Math.random() * PALETTES[paletteIdx].length)];
+
+            // Create glow
+            const glow = document.createElement('div');
+            glow.className = 'blob-glow';
+            glow.style.background = `radial-gradient(circle, ${palette[2]}88 0%, ${palette[3]}44 50%, transparent 70%)`;
+            glow.style.animation = `pulse ${rand(3, 5)}s ease-in-out infinite`;
+
+            // Create body
+            const body = document.createElement('div');
+            body.className = 'blob-body';
+            body.innerHTML = createSimpleBlobSVG(palette);
+            body.style.animation = `morph ${rand(10, 20)}s ease-in-out infinite`;
+
+            blob.appendChild(glow);
+            blob.appendChild(body);
+            container.appendChild(blob);
+
+            return container;
+        }
+
+        function setup() {
+            scene.innerHTML = '';
+
+            for (let i = 0; i < P.count; i++) {
+                const blob = createBlob(i);
+                scene.appendChild(blob);
+            }
+        }
+
+        window.addEventListener('resize', setup);
+        setup();
+
+        // Optional: Add some interactivity
+        document.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth - 0.5) * 20;
+            const y = (e.clientY / window.innerHeight - 0.5) * 20;
+            scene.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+        });
+    </script>
+</body>
+
+</html>

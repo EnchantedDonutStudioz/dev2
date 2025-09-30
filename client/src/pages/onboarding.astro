@@ -1,0 +1,100 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Bolt | Onboarding" proxy={false}>
+	<div class="background-gradient"></div>
+
+	<div id="container" class="container">
+		<div id="title-container" class="title-container">
+			<h1 class="title">
+				Welcome to <span class="aurora-text">Bolt</span>
+			</h1>
+			<p class="subtitle">Choose your preferred version to get started</p>
+		</div>
+
+		<div id="options-container" class="options-container">
+			<div class="option-card">
+				<div class="card-glow"></div>
+				<div class="card-content">
+					<div class="card-icon flex justify-center items-center">
+						<img
+							src="/assets/img/"
+							alt="Bolt Lite"
+							class="ig max-w-18 h-auto"
+						/>
+					</div>
+					<h2 class="card-title text-3xl">Bolt Lite</h2>
+					<p class="card-description text-gray-400">
+						Simple, practical, and lightning-fast
+					</p>
+					<ul class="card-features text-gray-300 text-2xs">
+						<li>✓ The typical browser proxy experience</li>
+						<li>✓ Optimized for gamers</li>
+						<li>✓ Great for low-end devices</li>
+						<li>✓ Essential features</li>
+						<li>✓ Lightning fast</li>
+					</ul>
+					<button class="card-button" onclick="versionChoose('lite')"
+						>Let's go</button
+					>
+				</div>
+			</div>
+			<div class="option-card">
+				<div class="card-glow"></div>
+				<div class="card-content">
+					<div class="card-icon flex justify-center items-center">
+						<img
+							src="/assets/img/"
+							alt="Bolt OS"
+							class="ig max-w-18 h-auto"
+						/>
+					</div>
+					<h2 class="card-title text-3xl">Bolt OS</h2>
+					<p class="card-description text-gray-400">
+						Beautiful, intricate, and feature-packed
+					</p>
+					<ul class="card-features text-gray-300 text-2xs">
+						<li>✓ App system for convenience</li>
+						<li>✓ Tons of features</li>
+						<li>✓ Great for better devices</li>
+						<li>✓ Highly productive</li>
+						<li>✓ Great for multitaskting</li>
+					</ul>
+					<button class="card-button" onclick="versionChoose('os')"
+						>Let's go</button
+					>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script lang="js">
+		document.addEventListener("DOMContentLoaded", () => {
+			const cards = document.querySelectorAll(".option-card");
+
+			cards.forEach((card) => {
+				card.addEventListener("mousemove", (e) => {
+					const rect = card.getBoundingClientRect();
+
+					const x = e.clientX - rect.left - rect.width / 2;
+					const y = e.clientY - rect.top - rect.height / 2;
+					const mouseX = e.clientX - rect.left;
+					const mouseY = e.clientY - rect.top;
+					card.style.setProperty("--mouse-x", `${mouseX}px`);
+					card.style.setProperty("--mouse-y", `${mouseY}px`);
+				});
+			});
+		});
+
+		function versionChoose(version) {
+			if (version === "lite") {
+				localStorage.setItem("version", "lite");
+				window.location.href = "/lite";
+			} else {
+				localStorage.setItem("version", "os");
+				window.location.href = "/os";
+			}
+		}
+	</script>
+</Layout>

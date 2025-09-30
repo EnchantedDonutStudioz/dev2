@@ -1,0 +1,33 @@
+---
+import "../styles/global.css";
+
+export interface Props {
+	title: string;
+	proxy?: boolean;
+}
+
+const {title, proxy = false} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/assets" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+		{
+			proxy && (
+				<>
+					<script is:inline src="/baremux/index.js" />
+					<script is:inline src="/math/scramjet.all.js" />
+					<script src="../scripts/proxy.ts" />
+				</>
+			)
+		}
+	</head>
+	<body>
+		<slot />
+	</body>
+</html>

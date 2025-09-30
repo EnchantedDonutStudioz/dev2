@@ -1,0 +1,16 @@
+@import url('./all/onboardpage.css');
+@import url('./all/onboard.css');
+@import url('./all/lg.css');
+@import url('./all/index.css');
+@import url('./all/browser.css');
+@import "tailwindcss";
+
+@font-face {
+    font-family: 'font';
+    src: url('/assets/fonts/font.ttf');
+}
+
+@font-face {
+    font-family: 'light';
+    src: url('/assets/fonts/light.ttf');
+}

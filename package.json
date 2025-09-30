@@ -1,0 +1,29 @@
+{
+  "name": "bolt",
+  "type": "module",
+  "version": "3.0.0",
+  "scripts": {
+    "dev": "astro dev --port 3000",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "@fastify/static": "^6.12.0",
+    "@mercuryworkshop/bare-mux": "^2.1.7",
+    "@mercuryworkshop/epoxy-transport": "^2.1.28",
+    "@mercuryworkshop/libcurl-transport": "^1.5.0",
+    "@mercuryworkshop/scramjet": "https://github.com/MercuryWorkshop/scramjet/releases/download/latest/mercuryworkshop-scramjet-2.0.0-alpha.tgz",
+    "@mercuryworkshop/wisp-js": "^0.3.3",
+    "@tailwindcss/vite": "^4.1.12",
+    "@titaniumnetwork-dev/ultraviolet": "^3.2.10",
+    "astro": "^5.13.5",
+    "fastify": "^4.29.1",
+    "tailwindcss": "^4.1.12",
+    "wisp-server-node": "^1.1.7"
+  },
+  "devDependencies": {
+    "sirv": "^3.0.2"
+  }
+}
