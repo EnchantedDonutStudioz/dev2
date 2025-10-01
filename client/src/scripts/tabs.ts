@@ -225,7 +225,9 @@ forwardButton?.addEventListener("click", function () {
   }
 });
 document.getElementById("disc-button")?.addEventListener("click", function () {
-  window.open("https://discord.gg/UPGBjxZut2", "_blank");
+  if (document.getElementById("menu-panel")?.classList.contains("active")) {
+    window.open("https://discord.gg/UPGBjxZut2", "_blank");
+  }
 });
 
 homeButton?.addEventListener("click", function () {
