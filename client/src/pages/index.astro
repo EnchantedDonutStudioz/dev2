@@ -7,7 +7,9 @@ import Layout from "../layouts/Layout.astro";
 
 	<div id="container" class="flex-col">
 		<div id="tab-section" class="glass flex flex-row">
-			<div id="wrapper" class="flex flex-row w-max justify-center items-center">
+			<div
+				id="wrapper"
+				class="flex flex-row w-max justify-center items-center">
 				<div id="tabs-wrapper" class="flex flex-row w-max"></div>
 				<div id="new-tab-button" class="button-container">
 					<svg
@@ -46,7 +48,9 @@ import Layout from "../layouts/Layout.astro";
 							stroke-linejoin="round"></path>
 					</svg>
 				</div>
-				<div id="back-button" class="button-container items-center relative">
+				<div
+					id="back-button"
+					class="button-container items-center relative">
 					<svg
 						width="100%"
 						height="100%"
@@ -146,11 +150,11 @@ import Layout from "../layouts/Layout.astro";
 				<div class="glass" id="panel">
 					<h2>Account</h2>
 					<h3>
-						Create an account to save and sync all your data accross all Bolt
-						links! This includes game progress, in-browser accounts (e.g.
-						GeForce NOW), settings, and more. Accounts also activate Bolt
-						Premium, so if you're a premium member you need an account to enable
-						it.
+						Create an account to save and sync all your data accross
+						all Bolt links! This includes game progress, in-browser
+						accounts (e.g. GeForce NOW), settings, and more.
+						Accounts also activate Bolt Premium, so if you're a
+						premium member you need an account to enable it.
 					</h3>
 					<div id="ap-buttons">
 						<div id="create-acc" class="glass">
@@ -254,7 +258,25 @@ import Layout from "../layouts/Layout.astro";
 		</div>
 		<div id="frame-section" class="glass"></div>
 	</div>
-	<div class="ad-banner-container"></div>
+	<div class="ad-banner-container">
+		<script type="text/javascript">
+			atOptions = {
+				key: "5730fde8a6c8159ab3221f21b2aefd29",
+				format: "iframe",
+				height: 90,
+				width: 728,
+				params: {},
+			};
+		</script>
+		<script
+			type="text/javascript"
+			src="//accompanimentwoody.com/5730fde8a6c8159ab3221f21b2aefd29/invoke.js"
+		></script>
+	</div>
+	<script
+		type="text/javascript"
+		src="//accompanimentwoody.com/f4/05/42/f4054274fc43b63c766a41efbb60f67e.js"
+	></script>
 </Layout>
 <script src="../scripts/tabs.ts"></script>
 <script>
